@@ -2,6 +2,10 @@
 
 A static portfolio with no build step or runtime dependencies. Open `index.html` locally, or serve this directory from a static host.
 
+
+use this link to view my deployed site : https://sundarsk-dev.github.io/portfolio/index.html
+
+
 ## Files to publish
 
 - `index.html`, `projects.html`, `publications.html`
