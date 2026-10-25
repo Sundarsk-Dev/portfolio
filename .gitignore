@@ -1,0 +1,14 @@
+﻿# Local source artwork, retired experiments and captures are not site dependencies.
+/artwork/
+/review/
+/.impeccable/
+/.codex/
+/.agents/
+/external-image-brief.md
+/portfolio-plan.md
+/transfercontext.md
+__pycache__/
+*.pyc
+node_modules/
+.env
+.env.*

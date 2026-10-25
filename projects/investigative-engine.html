@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Event-driven orchestration for news ingestion and multi-stage investigations."><meta name="theme-color" content="#111419">
+<title>Investigative Intelligence Engine — Kamal Sundar SK</title>
+<link rel="stylesheet" href="../assets/portfolio.css">
+<script src="../assets/navigation.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="masthead shell"><a class="brand" href="../index.html">Kamal Sundar SK.</a><nav class="main-nav" aria-label="Main navigation"><a href="../projects.html" aria-current="location">Projects</a><a href="../publications.html">Publications</a><a href="../index.html#education">Education</a><a href="../index.html#contact">Contact</a><a class="nav-resume" href="../Kamal_Sundar_SK_FlowCV_Resume_2026-10-24.pdf" target="_blank" rel="noopener">Résumé <span aria-hidden="true">↗</span></a></nav></header>
+<main id="main" class="shell">
+<p class="breadcrumb"><a href="../projects.html">← All projects</a></p>
+<section class="case-hero" aria-labelledby="project-heading"><p class="kicker">Event-driven investigation</p><h1 id="project-heading">Investigative<br>Intelligence Engine</h1><p class="lead">I built an event-driven agentic pipeline for news ingestion and multi-stage autonomous investigations, with deterministic guardrails and parallel dispatch.</p></section>
+<dl class="case-summary"><div><dt>My contribution</dt><dd>Event-driven investigation pipeline.</dd></div><div><dt>Implemented approach</dt><dd>Multi-stage orchestration and parallel dispatch.</dd></div><div><dt>Execution constraints</dt><dd>Deterministic guardrails.</dd></div></dl>
+<figure class="case-visual"><ul class="component-map"><li><span class="component-label">Ingestion</span><strong>Bring information in</strong><span>News ingestion in an event-driven pipeline.</span></li><li><span class="component-label">Orchestration</span><strong>Coordinate investigation stages</strong><span>Parallel dispatch across a multi-stage workflow.</span></li><li><span class="component-label">Constraints</span><strong>Keep guardrails explicit</strong><span>Deterministic guardrails within the agentic pipeline.</span></li></ul><figcaption>A conceptual view of the documented responsibilities; not a deployment diagram.</figcaption></figure>
+<nav class="case-nav" aria-label="On this page"><span>In this project</span><a href="#problem">The problem</a><a href="#approach">The approach</a><a href="#tradeoff">The tradeoff</a><a href="#evidence">Evidence &amp; source</a></nav>
+<div class="case-content">
+<section class="case-section" id="problem"><h2>The problem behind the feature</h2><div><p>A multi-stage investigation involves several kinds of work. Coordinating that work is an architectural concern: when a stage runs, what information it receives, and which boundaries constrain its execution.</p><p>The implemented pipeline connects news ingestion, staged investigation, and deterministic guardrails.</p></div></section>
+<section class="case-section" id="approach"><h2>What I built</h2><div><p>I built an event-driven agentic pipeline for real-time news ingestion and multi-stage autonomous investigations.</p><p>The implementation included deterministic guardrails and parallel dispatch across investigation stages.</p></div></section>
+<section class="case-section" id="tradeoff"><h2>A decision with consequences</h2><div><p><strong>I used parallel dispatch across the investigation workflow.</strong> That made coordination between stages a concern of the architecture, alongside the work done inside each stage.</p><p>Parallel work introduces decisions about ordering and partial results. These are tradeoffs to examine in this architecture; a throughput improvement is not assumed simply because dispatch is parallel.</p></div></section>
+<section class="case-section" id="evaluation"><h2>Keep orchestration and judgement distinct</h2><div><p>The deterministic guardrails address execution constraints. The factual quality of investigation material is a separate evaluation question.</p><p>This is the broader engineering thread in the project: coordinating a workflow and making its boundaries explicit are part of building the software.</p></div></section>
+<section class="case-section" id="evidence"><h2>Evidence and scope</h2><div><div class="evidence-panel"><p>The outcome presented here is the event-driven investigation pipeline. The source link and résumé document the orchestration work; deployment and throughput are not benchmarked in this account.</p><a class="text-link" href="https://github.com/Sundarsk-Dev/ET-INTELLIGENT-AGENT-TRUST-SYSTEM/tree/main/investigative-ai-v2" target="_blank" rel="noopener">Explore the source repository <span aria-hidden="true">↗</span></a><a class="text-link" href="../Kamal_Sundar_SK_FlowCV_Resume_2026-10-24.pdf" target="_blank" rel="noopener">View the résumé record <span aria-hidden="true">↗</span></a><details class="source-disclosure"><summary>About this account</summary><p>This overview follows the contribution and implementation described in my résumé. It does not present a production benchmark or an independent security evaluation.</p></details></div></div></section>
+</div>
+<aside class="case-next"><div><p>Continue through the work</p><h2>Autonomous Research Agent</h2><p>Return to execution records and memory.</p></div><a class="text-link" href="research-agent.html">Next project <span aria-hidden="true">→</span></a></aside>
+</main>
+<footer class="site-footer shell"><a href="../index.html">Back to the portfolio <span aria-hidden="true">↖</span></a><a href="mailto:Kamalsundarsk@gmail.com">Get in touch <span aria-hidden="true">↗</span></a></footer>
+</body>
+</html>
