@@ -4,7 +4,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
 const root = path.resolve(__dirname, "..");
-const output = path.join(root, "review");
+const output = path.join(root, "review", "verification");
 const pages = ["index.html", "publications.html", "projects/research-agent.html", "projects.html", "projects/trace.html", "projects/investigative-engine.html"];
 const mime = { ".html": "text/html; charset=utf-8", ".css": "text/css", ".js": "text/javascript", ".pdf": "application/pdf", ".webp": "image/webp" };
 // Local response interception avoids the sandbox's blocked loopback network.
@@ -40,6 +40,16 @@ async function layout(page, label) {
     fs.mkdirSync(output, { recursive: true });
     browser = await chromium.launch({ executablePath: process.env.PORTFOLIO_BROWSER || undefined, headless: true, timeout: 20000 });
     console.log(`Browser: Chrome/Chromium ${browser.version()}`);
+    if (process.argv.includes("--publications-entrance")) {
+      await require("./check_publications_entrance.cjs")(browser, { base, localFiles, output, errors });
+      assert.deepEqual(errors, [], "Browser JavaScript errors");
+      return;
+    }
+    if (process.argv.includes("--projects-entrance")) {
+      await require("./check_projects_entrance.cjs")(browser, { base, localFiles, output, errors });
+      assert.deepEqual(errors, [], "Browser JavaScript errors");
+      return;
+    }
     const context = await browser.newContext({ reducedMotion: "reduce" });
     await context.route("http://portfolio.test/**", localFiles);
     const page = await context.newPage();
@@ -54,9 +64,28 @@ async function layout(page, label) {
         const failedImages = await page.locator("img").evaluateAll(images => images.filter(img => !img.naturalWidth).map(img => img.src));
         assert.deepEqual(failedImages, [], "Images failed to load");
         assert.equal(await page.locator("[data-story-scene]").count(), 0);
+        if (route === "projects.html") {
+          const composition = await page.evaluate(() => {
+            const art = document.querySelector(".projects-room img").getBoundingClientRect();
+            const title = document.querySelector("#projects-heading").getBoundingClientRect();
+            const copy = document.querySelector(".projects-hero .index-hero-copy").getBoundingClientRect();
+            const mobile = innerWidth <= 1100;
+            const x = source => art.left + (source - (mobile ? 170 : 0)) * art.width / (mobile ? 1180 : 1585);
+            const y = source => art.top + source * art.height / 992;
+            return { centered: !mobile || Math.abs(x(753) - innerWidth / 2) < 2,
+              handsVisible: x(274) > 0 && x(1239) < innerWidth,
+              titleClear: mobile ? title.bottom < y(207) : x(1239) + 16 < title.left,
+              copyClear: mobile ? copy.bottom < y(207) : x(1239) + 16 < copy.left };
+          });
+          assert(Object.values(composition).every(Boolean), `Projects figure/text clearance at ${width}px: ${JSON.stringify(composition)}`);
+        }
         if (route === pages[0] && [390, 1440].includes(width)) {
           await page.screenshot({ path: path.join(output, `home-${width}.png`), fullPage: true });
           await page.screenshot({ path: path.join(output, `opening-${width}.png`) });
+        }
+        if (route === pages[0]) {
+          const columns = await page.evaluate(() => [".experience-records", ".education-records", ".about-copy", ".contact-links"].map(selector => document.querySelector(selector).getBoundingClientRect().left));
+          assert(Math.max(...columns) - Math.min(...columns) < 1, `Lower Home columns differ at ${width}px`);
         }
         if ([390, 1440].includes(width) && route !== pages[0]) {
           const name = route === "publications.html" ? "publications" : route === "projects.html" ? "projects" : path.basename(route, ".html");
@@ -73,6 +102,10 @@ async function layout(page, label) {
     assert.equal(await page.locator(".button").evaluate(el => getComputedStyle(el).transform), "none");
     assert.equal(await page.evaluate(() => document.getAnimations().length), 0);
     await context.close();
+
+    await require("./check_projects_entrance.cjs")(browser, { base, localFiles, output, errors });
+
+    await require("./check_publications_entrance.cjs")(browser, { base, localFiles, output, errors });
 
     const interactive = await browser.newContext({ viewport: { width: 1440, height: 900 }, recordVideo: { dir: output, size: { width: 1440, height: 900 } } });
     await interactive.route("http://portfolio.test/**", localFiles);
@@ -100,8 +133,8 @@ async function layout(page, label) {
     await live.waitForURL("**/projects.html");
     await live.getByRole("link", { name: "Read the project", exact: true }).nth(1).click();
     await live.waitForURL("**/projects/trace.html");
-    await live.getByRole("link", { name: "All projects" }).click();
-    await live.waitForURL("**/projects.html");
+    await live.getByRole("link", { name: "Back to projects" }).click();
+    await live.waitForURL("**/projects.html#trace");
     await live.getByRole("link", { name: "Education", exact: true }).click();
     await live.waitForURL("**/index.html#education");
     await live.getByRole("link", { name: "Predictive vehicle emission monitoring" }).click();
@@ -171,6 +204,9 @@ async function layout(page, label) {
 
     await live.goto(base + "/projects/research-agent.html#tradeoff");
     await live.waitForFunction(() => document.querySelector('.case-nav [aria-current]')?.getAttribute("href") === "#tradeoff");
+    // A short section must stay current when an anchor lands at its reading start.
+    await live.goto(base + "/projects/research-agent.html#evaluation");
+    await live.waitForFunction(() => document.querySelector('.case-nav [aria-current]')?.getAttribute("href") === "#evaluation");
     await live.goto(base + "/publications.html#review-heading");
     await live.waitForFunction(() => document.querySelector('.publication-nav [aria-current]')?.getAttribute("href") === "#review-heading");
 
@@ -207,7 +243,7 @@ async function layout(page, label) {
     await zoom.close();
     assert.deepEqual(errors, [], "Browser JavaScript errors");
     console.log("PASS: reduced motion, no-JS, touch and 720 CSS pixels at DPR 2 (200% layout equivalent; not browser zoom UI)");
-    console.log("Screenshots and navigation recording saved in review/. Files served by Playwright route interception; no external or loopback requests.");
+    console.log("Screenshots and navigation recording saved in review/verification/. Files served by Playwright route interception; no external or loopback requests.");
   } catch (error) {
     console.error(error);
     process.exitCode = 1;

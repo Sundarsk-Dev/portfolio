@@ -42,7 +42,7 @@ class Page(HTMLParser):
             assert a.get("width") and a.get("height"), (self.path, "unreserved image")
         if tag == "button":
             assert a.get("type") == "button", self.path
-        if tag == "svg":
+        if tag == "svg" and a.get("aria-hidden") != "true":
             assert a.get("role") == "img" and a.get("aria-labelledby"), self.path
         for field in ("href", "src", "data-src"):
             if a.get(field):

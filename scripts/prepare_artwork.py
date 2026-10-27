@@ -11,8 +11,8 @@ EXPORTS = [
     ("hero-foreground.png", "hero-foreground-mobile", 740, (0, 0, 1060, 992)),
     ("Cinematic Sci-Fi City Within a Silhouette.png", "cinematic-silhouette", 1586, None),
     ("Cinematic Sci-Fi City Within a Silhouette.png", "cinematic-silhouette-mobile", 740, (0, 0, 1060, 992)),
-    ("Silhouetted Coder in a Neon Control Room.png", "projects-silhouette", 1586, None),
-    ("Silhouetted Coder in a Neon Control Room.png", "projects-silhouette-mobile", 900, (0, 0, 1180, 992)),
+    ("Cyberpunk Operations Room Silhouette.png", "projects-silhouette", 1585, None),
+    ("Cyberpunk Operations Room Silhouette.png", "projects-silhouette-mobile", 900, (170, 0, 1350, 992)),
     ("silo for projects.png", "publications-silhouette-mobile", 900, (60, 0, 1240, 992)),
     ("silo for projects.png", "publications-silhouette", 1586, None),
 ]

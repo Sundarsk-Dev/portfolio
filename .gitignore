@@ -1,14 +1,20 @@
-﻿# Local source artwork, retired experiments and captures are not site dependencies.
+# Local originals and generated previews are preserved outside Git.
 /artwork/
 /review/
+/experiments/
+/working.md
 /.impeccable/
 /.codex/
 /.agents/
-/external-image-brief.md
-/portfolio-plan.md
-/transfercontext.md
 __pycache__/
 *.pyc
 node_modules/
+.venv/
+/playwright-report/
+/test-results/
+.DS_Store
+Thumbs.db
+desktop.ini
 .env
 .env.*
+# Active assets/, production scripts/ and maintenance documents stay versioned.
